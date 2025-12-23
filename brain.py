@@ -15,9 +15,7 @@ def call_gemini_with_retry(prompt,
                            max_retries=3,
                            base_delay=2.0,
                            **config_kwargs):
-    """
-    Gọi model Gemini với cơ chế retry khi bị quá tải (503 UNAVAILABLE).
-    """
+                               
     for attempt in range(1, max_retries + 1):
         try:
             response = client.models.generate_content(
@@ -29,7 +27,6 @@ def call_gemini_with_retry(prompt,
         except Exception as e:
             msg = str(e)
             print(f"[GEMINI ERROR] attempt {attempt}: {msg}")
-            # Nếu model quá tải thì chờ rồi thử lại
             if "UNAVAILABLE" in msg or "overloaded" in msg:
                 if attempt == max_retries:
                     break
@@ -37,7 +34,6 @@ def call_gemini_with_retry(prompt,
                 print(f"[RETRY] Model overloaded, waiting {sleep_s:.1f}s...")
                 time.sleep(sleep_s)
                 continue
-            # Break if any other errors
             break
     return None
 
@@ -123,7 +119,7 @@ OUTPUT FORMAT (JSON ONLY):
 
     if not response:
         print("[AUDITOR WARNING] Audit skipped because model is overloaded.")
-        # Fail-safe: coi như an toàn nhưng ghi rõ lý do
+        # Fail-safe
         return {
             "is_safe": True,
             "reason": "Audit skipped (model overloaded)",
@@ -134,7 +130,7 @@ OUTPUT FORMAT (JSON ONLY):
         return json.loads(response.text)
     except Exception as e:
         print(f"[AUDITOR ERROR] JSON parse failed: {e}")
-        # Fail-safe: không chặn hệ thống, nhưng báo lý do
+        # Fail-safe
         return {
             "is_safe": True,
             "reason": "Audit failed (JSON parse error)",
