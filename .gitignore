@@ -1,0 +1,38 @@
+#-*- coding: utf-8 -*-
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak
+venv.bak
+
+# pycache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Audio files
+*.mp3
+*.wav
+*.aiff
+*.aac
+*.ogg
+*.flac
+
+# Image files
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.svg
+*.webp
+
+# Model files
+*.pt
+
+# Database files
+*.json
