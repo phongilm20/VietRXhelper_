@@ -1,7 +1,0 @@
-ultralytics
-easyocr
-opencv-python
-google-genai
-gtts
-pygame
-python-dotenv
