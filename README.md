@@ -29,10 +29,13 @@ The system utilizes a custom-trained YOLOv8 model for label localization and Eas
 ## 4. System Demonstration Activity
 
 ### 4.1 Visual Identification Performance
-The following figure demonstrates the system's ability to localize medication labels and extract critical metadata in a real-world environment via a live video stream.
+The following figures demonstrate the system's ability to localize medication labels and extract critical metadata in a real-world environment via a live video stream.
 
-![VietRx Application Demo](demo_capture.png)
-*Figure 1: Real-time identification and metadata extraction of a pharmaceutical container.*
+![VietRx Application Demo Interface](demo_capture.png)
+*Figure 1a: Real-time identification interface showing successful detection of Bexarotene.*
+
+![VietRx Camera Capture View](camera.png)
+*Figure 1b: View of the camera capture process during operation.*
 
 ### 4.2 Audible Guidance Output
 The output of the Dual-LLM pipeline is converted into natural speech. You can listen to the audited sample here:
@@ -66,41 +69,26 @@ To evaluate the real-time prototype, execute: `python main_test.py`
 
 VietRXhelper_/
 ├── best.pt               # YOLOv8 custom weights
-
 ├── brain.py              # LLM Integration & Safety Auditor
-
 ├── fda_database.json     # Local FDA Knowledge Base
-
 ├── knowledge.py          # FDA Database lookup logic
-
 ├── knowledge_test.py     # Advanced entity extraction (Webcam version)
-
 ├── main.py               # Static image processing entry point
-
 ├── main_test.py          # Real-time Webcam Controller (Main Entry)
-
 ├── mining.py             # ETL script for FDA data
-
 ├── vision.py             # OCR module for files
-
 ├── vision_test.py        # Video frame processing module
-
 ├── requirements.txt      # Dependency manifest
-
 ├── advice.mp3            # Sample audio output
-
-├── demo_capture.png      # System demonstration image
-
+├── camera.png            # Demonstration image (camera view)
+├── demo_capture.png      # Demonstration image (interface view)
 └── README.md             # Project documentation
 
 ## 7. Author and Institutional Affiliation
 
 Xuan Thanh Phong Nguyen
-
 Computer Engineering Student
-
 Department of Computer Science and Engineering
-
 Wright State University, Dayton, Ohio
 
 ---
