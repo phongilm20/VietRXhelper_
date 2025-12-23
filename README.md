@@ -1,150 +1,84 @@
 <p align="center">
-  <img src="logo_VietRXhelper.png" alt="VietRx Helper Logo" height="300">
+  <img src="logo_VietRXhelper.png" alt="VietRx Helper Logo" height="250">
 </p>
 
-# VietRx Helper: AI-Powered Medical Assistant for the Elderly
+# VietRx Helper: Multimodal Assistive Technology for Pharmaceutical Label Interpretation
 
-> **A safety-first, multimodal AI system designed to bridge the health literacy gap for Vietnamese immigrants using Computer Vision, RAG, and a Dual-LLM Audit Architecture.**
+> **Abstract:** This project presents a safety-oriented, multimodal AI system designed to mitigate health literacy barriers for Vietnamese immigrants. The system integrates real-time Computer Vision (YOLOv8, EasyOCR), Retrieval-Augmented Generation (RAG) using FDA-validated datasets, and a Dual-LLM Audit Architecture to ensure pharmaceutical accuracy and cultural relevance.
 
 ---
 
-## 📖 Overview
+## 1. Research Objectives and Overview
 
-**VietRx Helper** is an intelligent assistive technology designed to help elderly Vietnamese individuals understand complex medication labels. Unlike standard translation tools, this system prioritizes **medical safety** and **cultural adaptation**.
+VietRx Helper is an assistive technology developed to provide elderly users with accurate, culturally adapted interpretations of medication labels. Unlike conventional translation tools, this system prioritizes clinical safety by anchoring Large Language Model (LLM) responses to verified medical databases. The primary goal is to provide a reliable interface that converts complex pharmacological data into simplified, audible Vietnamese guidance.
 
-The core innovation lies in its **Dual-LLM Safety Architecture**, where one AI generates empathetic advice while a second "Auditor" AI verifies the content against official FDA records to prevent hallucinations before the user hears a single word.
+## 2. Technical Methodology: The Dual-Agent Safety Architecture
 
-## 🚀 Key Features
+To prevent AI hallucinations in medical contexts, the system employs a "Reviewer-Refiner" paradigm:
 
-* **👁️ End-to-End Computer Vision:**
+1. **Generation (The Doctor Agent):** Utilizes Google Gemini to synthesize raw OCR data and FDA metadata into an empathetic response using Vietnamese honorifics.
+2. **Validation (The Auditor Agent):** A secondary logic gate that performs a strict fact-check of the generated advice against source FDA records.
+3. **Conflict Resolution:** If the Auditor detects discrepancies (e.g., fabricated dosages), the system triggers a recovery protocol to issue a safe, generalized warning instead of potentially harmful misinformation.
 
-  * Utilizes **YOLOv8 (Nano)** fine-tuned on a custom drug dataset to detect drug names on bottle labels.
-  * Integrates **EasyOCR** with grayscale + threshold preprocessing for robust text extraction.
+## 3. Implementation Details: Computer Vision and Entity Extraction
 
-* **🛡️ Dual-LLM Safety Protocol (Reviewer-Refiner):**
+The system utilizes a custom-trained YOLOv8 model for label localization and EasyOCR for text recognition. To bridge raw OCR output with structured data, the system implements:
+* **Fuzzy String Matching:** Employs Levenshtein distance to map noisy OCR candidates to verified FDA entries.
+* **Heuristic Metadata Extraction:** A Regex-based engine designed to identify Dosage Strength (mg/ml), Quantity (Tablets/Capsules), and Expiry Dates.
 
-  * **The Doctor (Generator):** Drafts culturally appropriate advice using polite Vietnamese honorifics.
-  * **The Auditor (Evaluator):** Performs strict fact-checking using cross-referenced FDA data.
+## 4. System Demonstration Activity
 
-* **📚 RAG (Retrieval-Augmented Generation):**
+### 4.1 Visual Identification Performance
+The following figure demonstrates the system's ability to localize medication labels and extract critical metadata in a real-world environment via a live video stream.
 
-  * Anchors generation to a verified local FDA Knowledge Base built from the OpenFDA API.
+![VietRx Application Demo](demo_capture.png)
+*Figure 1: Real-time identification and metadata extraction of a pharmaceutical container.*
 
-* **🧠 Cultural Adaptation (Generative AI):**
+### 4.2 Audible Guidance Output
+The output of the Dual-LLM pipeline is converted into natural speech. This sample demonstrates the audited, culturally adapted medical advice provided to the user:
 
-  * Uses **Google Gemini 2.5 Flash** to translate pharmacological terminology into easy-to-understand Vietnamese.
+[🔊 Listen to Sample Medical Advice (advice.mp3)](advice.mp3)
 
-* **🗣️ Text-to-Speech (TTS):**
+## 5. Operational Workflow and Installation
 
-  * Outputs validated advice via natural Vietnamese speech.
+### 5.1 System Requirements
+* **Environment:** Python 3.10+
+* **Dependencies:** ultralytics, easyocr, opencv-python, google-genai, gTTS, pygame, python-dotenv.
 
-## 🏗️ System Architecture
+### 5.2 Execution Protocol
+To evaluate the real-time prototype, execute the following command:
+`python main_test.py`
 
-1. **Data Acquisition Layer:** ETL script (`mining.py`) pulls and cleans NDC/FDA drug data.
+* **Interaction Steps:**
+  - Press 's' to initiate frame capture and analysis.
+  - Verify the detected drug name via the terminal prompt.
+  - The system will automatically synthesize and play the audited Vietnamese audio advice.
+  - Press 'q' to terminate the session.
 
-2. **Vision Layer:**
+## 6. Project Structure
 
-   * Raw Image → YOLOv8 Detection → Cropping → OCR.
-   * Output: Drug name candidate.
+VietRXhelper_/
+├── best.pt               # YOLOv8 custom weights
+├── brain.py              # LLM Integration & Safety Auditor
+├── fda_database.json     # Local FDA Knowledge Base
+├── knowledge.py          # FDA Database lookup logic
+├── knowledge_test.py     # Advanced entity extraction (Webcam version)
+├── main.py               # Static image processing entry point
+├── main_test.py          # Real-time Webcam Controller (Main Entry)
+├── mining.py             # ETL script for FDA data
+├── vision.py             # OCR module for files
+├── vision_test.py        # Video frame processing module
+├── requirements.txt      # Dependency manifest
+├── advice.mp3            # Sample audio output
+├── demo_capture.png      # System demonstration image
+└── README.md             # Project documentation
 
-3. **Knowledge Retrieval Layer:**
+## 7. Author and Institutional Affiliation
 
-   * Fuzzy string matching → Retrieve Ground Truth (ingredients, pharm class).
+Xuan Thanh Phong Nguyen
+Computer Engineering Student
+Department of Computer Science and Engineering
+Wright State University, Dayton, Ohio
 
-4. **Dual-LLM Reasoning Layer:**
-
-   * **Doctor Agent:** draft response.
-   * **Auditor Agent:** validates accuracy & forces regeneration if mismatched.
-
-5. **Interaction Layer:**
-
-   * Sanitizes text → TTS audio output.
-
-## 📂 Project Structure
-
-```text
-VietRx-Project/
-├── models/
-│   └── best.pt               
-├── src/                      
-│   ├── main.py               
-│   ├── vision.py
-│   ├── knowledge.py
-│   └── brain.py              
-├── tests_webcam/             
-│   ├── main_test.py          
-│   ├── vision_test.py        
-│   └── knowledge_test.py     
-├── fda_database.json         
-├── requirements.txt          
-├── .env
-└── README.md                 
-```
-
-## 🛠️ Installation & Setup
-
-### Prerequisites
-
-* Python 3.9+
-* Google Gemini API Key
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/phongilm20/VietRx-Helper.git
-cd VietRx-Helper
-```
-
-### 2. Install Dependencies
-
-```bash
-pip install requests google-genai ultralytics easyocr opencv-python gTTS
-```
-
-### 3. Setup Environment
-
-Replace the placeholder API Key in `brain.py` with your actual Google Gemini API Key.
-
-### 4. Initialize Database
-
-```bash
-python mining.py
-```
-
-*(Generates ~5000 FDA-verified drug records.)*
-
-## 💻 Usage
-
-1. Add an image of a medication bottle (e.g., `test.jpg`).
-2. Run:
-
-```bash
-python main.py
-```
-
-3. Pipeline:
-
-   * Detect drug name.
-   * Retrieve FDA data.
-   * Doctor AI drafts advice.
-   * Auditor AI validates correctness.
-   * Audio is generated and played.
-
-## 🔬 Tech Stack
-
-* **Language:** Python 3.10
-* **Computer Vision:** YOLOv8, EasyOCR, OpenCV
-* **Generative AI:** Google Gemini 2.5 Flash (Dual-Layer Architecture)
-* **Database:** OpenFDA
-* **Audio:** gTTS
-
-## ⚠️ Disclaimer
-
-This is a research prototype for educational purposes and **not** a medical substitute.
-
-## 👨‍💻 Author
-
-**Nguyen Phong**
-
-* Department of Computer Science & Engineering
-* Wright State University
+---
+*Disclaimer: This system is a research prototype for academic purposes and does not constitute professional medical advice.*
