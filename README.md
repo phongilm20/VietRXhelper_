@@ -69,19 +69,33 @@ To evaluate the real-time prototype, execute: `python main_test.py`
 
 VietRXhelper_/
 ├── best.pt               # YOLOv8 custom weights
+
 ├── brain.py              # LLM Integration & Safety Auditor
+
 ├── fda_database.json     # Local FDA Knowledge Base
+
 ├── knowledge.py          # FDA Database lookup logic
+
 ├── knowledge_test.py     # Advanced entity extraction (Webcam version)
+
 ├── main.py               # Static image processing entry point
+
 ├── main_test.py          # Real-time Webcam Controller (Main Entry)
+
 ├── mining.py             # ETL script for FDA data
+
 ├── vision.py             # OCR module for files
+
 ├── vision_test.py        # Video frame processing module
+
 ├── requirements.txt      # Dependency manifest
+
 ├── advice.mp3            # Sample audio output
+
 ├── camera.png            # Demonstration image (camera view)
+
 ├── demo_capture.png      # Demonstration image (interface view)
+
 └── README.md             # Project documentation
 
 ## 7. Author and Institutional Affiliation
