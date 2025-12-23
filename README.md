@@ -101,8 +101,11 @@ VietRXhelper_/
 ## 7. Author and Institutional Affiliation
 
 Xuan Thanh Phong Nguyen
+
 Computer Engineering Student
+
 Department of Computer Science and Engineering
+
 Wright State University, Dayton, Ohio
 
 ---
