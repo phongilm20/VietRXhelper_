@@ -10,10 +10,8 @@ def load_database():
     with open(DB_FILE, 'r', encoding='utf-8') as f:
         return json.load(f)
 
-# Load data into memory once
 DRUG_DB = load_database()
 
-# --- ĐÃ SỬA TÊN HÀM Ở DÒNG DƯỚI ---
 def search_fda(text_input):
     """
     Performs a fuzzy search on the local FDA database.
